@@ -35,7 +35,11 @@ class ShopListService:
         """
         owned_lists = ShopList.query.filter_by(owner_id=user_id).all()
 
-        shared_lists_ids = db.session.query(ShopListShare.shop_list_id).filter_by(user_id=user_id).all()
+        shared_lists_ids = (
+            db.session.query(ShopListShare.shop_list_id)
+            .filter_by(user_id=user_id)
+            .all()
+        )
         shared_lists_ids = [id[0] for id in shared_lists_ids]
         shared_lists = ShopList.query.filter(ShopList.id.in_(shared_lists_ids)).all()
 
@@ -71,8 +75,7 @@ class ShopListService:
             return Access.Write
 
         share = ShopListShare.query.filter_by(
-            shop_list_id=shop_list_id,
-            user_id=user_id
+            shop_list_id=shop_list_id, user_id=user_id
         ).first()
 
         if share:
@@ -103,8 +106,7 @@ class ShopListService:
                 continue
 
             existing_share = ShopListShare.query.filter_by(
-                shop_list_id=shop_list_id,
-                user_id=user.id
+                shop_list_id=shop_list_id, user_id=user.id
             ).first()
 
             if existing_share:
@@ -112,9 +114,7 @@ class ShopListService:
                 shared_user_ids.append(user.id)
             else:
                 share = ShopListShare(
-                    shop_list_id=shop_list_id,
-                    user_id=user.id,
-                    access=access
+                    shop_list_id=shop_list_id, user_id=user.id, access=access
                 )
                 db.session.add(share)
                 shared_user_ids.append(user.id)
@@ -141,8 +141,7 @@ class ShopListService:
                 continue
 
             existing_share = ShopListShare.query.filter_by(
-                shop_list_id=shop_list_id,
-                user_id=user.id
+                shop_list_id=shop_list_id, user_id=user.id
             ).first()
 
             if existing_share:

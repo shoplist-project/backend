@@ -6,13 +6,15 @@ from models import db
 
 
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     def set_password(self, password):
         password_bytes = password.encode()
@@ -26,6 +28,6 @@ class User(db.Model):
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'username': self.username,
+            "id": self.id,
+            "username": self.username,
         }

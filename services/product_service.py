@@ -16,11 +16,7 @@ class ProductService:
             return None
 
         try:
-            product = Product(
-                name=name,
-                shop_list_id=shop_list_id,
-                strikeout=False
-            )
+            product = Product(name=name, shop_list_id=shop_list_id, strikeout=False)
 
             db.session.add(product)
             db.session.commit()
@@ -42,7 +38,11 @@ class ProductService:
         """
         Get all products in a shop list
         """
-        return Product.query.filter_by(shop_list_id=shop_list_id).order_by(Product.created_at).all()
+        return (
+            Product.query.filter_by(shop_list_id=shop_list_id)
+            .order_by(Product.created_at)
+            .all()
+        )
 
     @staticmethod
     def update_product(product_id, name=None, strikeout=None):
